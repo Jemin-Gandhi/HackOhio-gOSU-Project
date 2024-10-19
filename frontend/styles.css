@@ -1,55 +1,108 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
+    background-color: #F2F2F2; /* Light gray background for contrast */
     text-align: center;
     padding: 50px;
+    margin: 0;
+    color: #333;
 }
 
 h1 {
-    color: #333;
+    color: #333; /* Darker text for heading */
+    font-size: 28px; /* Larger font for heading */
     margin-bottom: 20px;
+    text-transform: uppercase; /* Uppercase for headings */
 }
 
 p {
     font-size: 1.2em;
     margin-top: 20px;
-    color: #444;
+    color: #333; /* Dark text for better readability */
 }
 
 button {
     padding: 10px 20px;
-    background-color: #007BFF;
-    color: white;
+    background-color: #E3000F; /* Red button background */
+    color: #FFFFFF; /* White text */
     border: none;
     cursor: pointer;
     margin-top: 20px;
     font-size: 1em;
-    border-radius: 5px;
+    border-radius: 25px; /* Rounded corners */
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #FFCCCB; /* Lighter red on hover */
+    color: #B30000; /* Darker red text on hover */
 }
 
 .app-container {
-    max-width: 400px;
+    max-width: 500px; /* Max width for fitting content */
     margin: 0 auto;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    background: #FFFFFF; /* White background for content */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow */
     padding: 20px;
     text-align: center;
 }
 
 .warning-display {
-    background-color: #ffcccb; /* Light red background for warning */
-    color: #b30000; /* Dark red text color */
+    background-color: #FFCCCB; /* Light red background for warning */
+    color: #B30000; /* Dark red text */
     font-size: 1.5em;
     font-weight: bold;
     padding: 15px;
     border-radius: 10px;
     margin-top: 20px;
     box-shadow: 0 4px 10px rgba(255, 0, 0, 0.2); /* Red shadow for emphasis */
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333; /* Darker text for form labels */
+}
+
+input {
+    width: 100%; /* Ensure the input takes up the full width of its container */
+    max-width: 100%; /* Prevent it from exceeding the container width */
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-bottom: 15px;
+    transition: border 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow for input */
+    background-color: #FFF5F5; /* Light red background */
+    box-sizing: border-box; /* Include padding and border in the element's width */
+}
+
+input:focus {
+    border-color: #E3000F; /* Red border on focus */
+    outline: none;
+}
+
+
+.info-display {
+    background-color: #FFF5F5; /* Light red background for info boxes */
+    padding: 15px;
+    border-radius: 5px;
+    margin: 10px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#overCapacity {
+    font-size: 1.2em;
+    margin-top: 15px;
+    background-color: #FF6666; /* Brighter red background for over capacity */
+    color: #FFFFFF; /* White text */
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(255, 0, 0, 0.2);
 }
 
 .hidden {

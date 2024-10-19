@@ -43,15 +43,23 @@ def serve_static_files(path):
 @app.route('/api/message') 
 def send_message():
     try:
-        capacity = int(serial_data)
+        capacity = int(serial_data)  # Assuming serial_data contains the current number of passengers
+        max_capacity = 60  # Total number of spots
+        percentage_full = (capacity / max_capacity) * 100
+        spots_left = max_capacity - capacity
     except ValueError:
         capacity = 0  # Default value if parsing fails
+        percentage_full = 0
+        spots_left = 60
 
-    over_capacity = capacity > 60
+    over_capacity = capacity > max_capacity
     return jsonify({
-        "message": f"Capacity at {capacity} of 60",
-        "over_capacity": over_capacity
+        "message": f"Capacity at {capacity} of {max_capacity}",
+        "over_capacity": over_capacity,
+        "percentage_full": round(percentage_full, 2),
+        "spots_left": spots_left
     })
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
