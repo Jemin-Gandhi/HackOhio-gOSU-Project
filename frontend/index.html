@@ -3,13 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Embedded Python with Flask</title>
-    <!-- Explicitly set an empty favicon to prevent requests for favicon.ico -->
-    <link rel="icon" href="data:,">
+    <title>Flask Frontend</title>
 </head>
 <body>
-    <h1>Welcome to Flask!</h1>
-    <p>This is an embedded Python application using Flask.</p>
-    <p>Testing</p>
+    <h1>Welcome to the Flask App</h1>
+    <button id="messageButton">Click me!</button>
+    <p id="responseText"></p>
+
+    <script>
+        document.getElementById('messageButton').addEventListener('click', function() {
+            fetch('/api/message') // Fetch the message from the API
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('responseText').innerText = data.message;
+                })
+                .catch(error => {
+                    document.getElementById('responseText').innerText = 'Error: ' + error;
+                });
+        });
+    </script>
 </body>
 </html>
