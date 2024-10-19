@@ -10,8 +10,8 @@ services:
     volumes:
       - ./backend:/app               # Mount the backend folder
       - ./frontend:/app/frontend      # Mount the frontend folder
-    devices:
-      - "/dev/ttyUSB0:/dev/ttyUSB0"         # Add access to the usb0 device
+    # devices:
+    #   - "/dev/ttyUSB0:/dev/ttyUSB0"         # Add access to the usb0 device
     networks:
       - webnet
 

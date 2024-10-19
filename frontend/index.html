@@ -4,29 +4,126 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>gOSU - Campus Navigator</title>
-    <!-- Link the external CSS file -->
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4; /* Light gray background */
+            margin: 0;
+            padding: 0;
+            color: #333; /* Dark text for contrast */
+        }
+
+        .app-container {
+            max-width: 400px; /* Limit the width for mobile feel */
+            margin: 0 auto; /* Center the container */
+            background: #fff; /* White background for the app */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            padding: 20px; /* Padding inside the container */
+            position: relative; /* Relative positioning for children */
+            text-align: center; /* Center text within the app */
+        }
+
+        h1 {
+            font-size: 24px; /* Larger font size for the title */
+            color: #BB0000 ; /* Dark red for the title */
+            margin: 0; /* Remove default margin */
+            margin-bottom: 20px; /* Space below the title */
+        }
+
+        h2 {
+            color: #BB0000 ; /* Dark red for subheadings */
+            margin: 10px 0; /* Spacing above and below */
+        }
+
+        label {
+            display: block; /* Block display for label */
+            margin-bottom: 5px; /* Space between label and input */
+            color: #555; /* Slightly lighter text for labels */
+            font-weight: bold; /* Bold labels for emphasis */
+        }
+
+        input {
+            width: 100%; /* Full width */
+            padding: 12px; /* Inner spacing */
+            border: 1px solid #ccc; /* Border styling */
+            border-radius: 5px; /* Rounded corners */
+            font-size: 16px; /* Larger font size for readability */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for input */
+            margin-bottom: 15px; /* Space below input */
+            transition: border 0.3s; /* Smooth transition for focus */
+        }
+
+        input:focus {
+            border-color: #BB0000 ; /* red border on focus */
+            outline: none; /* Remove default outline */
+        }
+
+        .info-display {
+            background-color: #fff3f3; /* Light red background for info */
+            padding: 15px; /* Inner spacing */
+            border-radius: 5px; /* Rounded corners */
+            margin: 10px 0; /* Space between info displays */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+
+        p {
+            font-size: 18px; /* Larger font size */
+            color: #333; /* Dark text color */
+            margin: 0; /* Remove default margin */
+        }
+
+        /* Button style */
+        button {
+            background-color: #BB0000 ; /* red background */
+            color: white; /* White text */
+            padding: 10px 15px; /* Inner spacing */
+            border: none; /* No border */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor on hover */
+            font-size: 16px; /* Font size */
+            transition: background-color 0.3s; /* Smooth transition for hover */
+        }
+
+        button:hover {
+            background-color: #6f0000; /* Darker red on hover */
+        }
+    </style>
 </head>
 <body>
     <div class="app-container">
-        <h1>Live Bus Data</h1>
-        <p id="serialData">Waiting for serial data...</p>
-        <div id="overCapacity" class="hidden warning-display">OVER CAPACITY</div>
-    </div>
+        <h1>gOSU - Campus Navigator</h1>
+        <form>
+            <label for="location-input">Choose a building:</label>
+            <input list="location" id="location-input" name="location" placeholder="Start typing...">
+            <datalist id="location">
+                <option value="Dreese Lab">
+                <option value="Raney House">
+                <option value="Ohio Union">
+                <option value="Animal Science Building"></option>
+            </datalist>
+            <button type="button" onclick="getRoute()">Get Route</button>
+        </form>
+
+        <div class="info-display">
+            <h2>Shortest Route:</h2>
+            <p id="route-display">Route will be displayed here.</p>
+        </div>
+
+        <div class="info-display">
+            <h2>Bus Capacity:</h2>
+            <p id="people-count">__ % full, __ spots left</p>
+        </div>
+
+    <h1>Serial Data from COM3 (CH340)</h1>
+    <p id="serialData">Waiting for data...</p>
 
     <script>
-        // Function to update serial data
         function updateSerialData() {
             fetch('/api/message')
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('serialData').innerText = data.message;
-                    // Show or hide the OVER CAPACITY message
-                    if (data.over_capacity) {
-                        document.getElementById('overCapacity').classList.remove('hidden');
-                    } else {
-                        document.getElementById('overCapacity').classList.add('hidden');
-                    }
                 })
                 .catch(error => {
                     document.getElementById('serialData').innerText = 'Error: ' + error;
