@@ -3,24 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flask Frontend</title>
+    <title>Flask Serial Reader</title>
 </head>
 <body>
-    <h1>Welcome to the Flask App</h1>
-    <button id="messageButton">Click me!</button>
-    <p id="responseText"></p>
+    <h1>Serial Data from COM3 (CH340)</h1>
+    <p id="serialData">Waiting for data...</p>
 
     <script>
-        document.getElementById('messageButton').addEventListener('click', function() {
-            fetch('/api/message') // Fetch the message from the API
+        function updateSerialData() {
+            fetch('/api/message')
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById('responseText').innerText = data.message;
+                    document.getElementById('serialData').innerText = data.message;
                 })
                 .catch(error => {
-                    document.getElementById('responseText').innerText = 'Error: ' + error;
+                    document.getElementById('serialData').innerText = 'Error: ' + error;
                 });
-        });
+        }
+
+        // Update serial data every second
+        setInterval(updateSerialData, 1000);
     </script>
 </body>
 </html>

@@ -7,9 +7,11 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5000:5000"
+    devices:
+      - "/dev/ttyUSB0:/dev/ttyUSB0"  # Use the correct serial device
     volumes:
-      - ./backend:/app           # Mount the backend folder
-      - ./frontend:/app/frontend  # Mount the frontend folder
+      - ./backend:/app               # Mount the backend folder
+      - ./frontend:/app/frontend      # Mount the frontend folder
     networks:
       - webnet
 
