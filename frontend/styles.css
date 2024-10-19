@@ -109,6 +109,30 @@ input:focus {
     display: none;
 }
 
+/* Map link styled as a button */
+.map-link {
+    margin-top: 20px;
+}
+
+.button-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #E3000F; /* Match the red button background */
+    color: #FFFFFF; /* White text */
+    text-decoration: none; /* Remove underline */
+    font-size: 1em;
+    border-radius: 25px; /* Rounded corners */
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: background-color 0.3s ease;
+}
+
+.button-link:hover {
+    background-color: #FFCCCB; /* Lighter red on hover */
+    color: #B30000; /* Darker red text on hover */
+}
+
+
 footer {
     text-align: center;
     text-wrap: wrap;
