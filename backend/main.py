@@ -1,19 +1,19 @@
-from flask import Flask, send_from_directory, jsonify
+from flask import Flask, send_from_directory, jsonify, request
 import serial
 import threading
 
 # Initialize the Flask app and configure it to serve static files from /app/frontend
 app = Flask(__name__, static_folder='frontend', static_url_path='')
 
-# Global variable to store the serial data
+# Global variables
 serial_data = "Waiting for data..."
+user_location = None
 
 # Function to continuously read from the serial port
 def read_from_serial():
     global serial_data
     ser = None
     try:
-        # Use /dev/ttyUSB0 instead of COM3 (Linux-style path)
         ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
         while True:
             if ser.in_waiting > 0:
@@ -39,7 +39,7 @@ def serve_index():
 def serve_static_files(path):
     return send_from_directory(app.static_folder, path)
 
-# New route that responds with the latest serial data
+# API route to get serial data
 @app.route('/api/message') 
 def send_message():
     return jsonify({"message": serial_data})
