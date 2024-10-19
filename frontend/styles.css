@@ -108,3 +108,27 @@ input:focus {
 .hidden {
     display: none;
 }
+
+footer {
+    text-align: center;
+    text-wrap: wrap;
+    text-size-adjust: 100%;
+    padding: 20px 0;
+    background-color: #E3000F;
+    color: rgb(0, 0, 0);
+    font-size: 1.25em;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    left: 0;
+    right: 0;
+    width: 100%; /* Ensure the footer spans the full width of the page */
+    bottom: 0; /* Stick footer to the bottom */
+}
+
+footer p {
+    margin: 0;
+    line-height: 1.5em; /* Space the text for better readability */
+}
+
+
+

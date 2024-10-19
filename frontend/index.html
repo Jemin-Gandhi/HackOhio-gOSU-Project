@@ -35,7 +35,15 @@
         <div id="overCapacity" class="hidden">OVER CAPACITY</div>
     </div>
 
+    <!-- Footer -->
+    <footer>
+        <p>&copy; <span id="currentYear"></span> | Project Authors: Mackenzie Langhals | Job Getzinger | Wyatt Gerlach | Jemin Ghandi</p>
+    </footer>
+
     <script>
+        // Set current year in the footer
+        document.getElementById("currentYear").textContent = new Date().getFullYear();
+
         function updateSerialData() {
             fetch('/api/message')
                 .then(response => response.json())
