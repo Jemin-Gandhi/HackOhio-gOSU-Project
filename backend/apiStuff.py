@@ -73,8 +73,10 @@ def get_closest_bus_stops(lat, lon):
             
             pair = {"name": stop_name, "distance": distance, "latitude": stop_lat, "longitude": stop_lon}
             closest_stops.append(pair)
-        
+        print(closest_stops)
         closest_stops.sort(key=lambda x: x['distance'])
+        print("Now sorted:")
+        print(closest_stops)
         if closest_stops:
             first_stop = closest_stops[0]
             first_lat = first_stop['latitude']
