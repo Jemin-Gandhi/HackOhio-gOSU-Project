@@ -1,6 +1,8 @@
 import requests
 import json
 import geocoder
+import math
+from calculations import get_walking_time
 
 def get_bus_routes():
     url = "https://content.osu.edu/v2/bus/routes/CC"
@@ -87,10 +89,24 @@ def get_closest_bus_stops(lat, lon):
             stop_name = stop['name']
             distance = math.sqrt((lat - stop_lat) ** 2 + (lon - stop_lon) ** 2)
             
-            pair = {"name": stop_name, "distance": distance}
+            pair = {"name": stop_name, "distance": distance, "latitude": stop_lat, "longitude": stop_lon}
             closest_stops.append(pair)
         
         closest_stops.sort(key=lambda x: x['distance'])
-        return closest_stops
+
+        if closest_stops:
+            first_stop = closest_stops[0]
+            first_lat = first_stop['latitude']
+            first_lon = first_stop['longitude']
+            print(f"First stop latitude: {first_lat}, longitude: {first_lon}")
+            timeWalk = get_walking_time(lat, lon, first_lat, first_lon)
+            nameAndTime = {"name": first_stop['name'], "time": timeWalk, "latitude": first_lat, "longitude": first_lon}
+            return nameAndTime
     else:
         response.raise_for_status()
+
+lat, lon = 39.997618, -83.008567
+
+allstops = get_closest_bus_stops(lat, lon)  # Example usage: find the closest bus stops to a given location
+print(allstops)
+
