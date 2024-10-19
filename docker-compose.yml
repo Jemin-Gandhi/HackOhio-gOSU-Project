@@ -7,11 +7,13 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5000:5000"
-    devices:
-      - "/dev/ttyUSB0:/dev/ttyUSB0"  # Use the correct serial device
     volumes:
       - ./backend:/app               # Mount the backend folder
       - ./frontend:/app/frontend      # Mount the frontend folder
+    devices:
+      - "/dev/ttyUSB0:/dev/ttyUSB0"   # Map the serial device
+    privileged: true                  # Ensure the container has elevated privileges
+    entrypoint: /app/entrypoint.sh    # Keep the entrypoint script
     networks:
       - webnet
 
