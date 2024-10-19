@@ -71,4 +71,26 @@ if __name__ == "__main__":
         print(f"Latitude: {latitude}")
         print(f"Longitude: {longitude}")
     else:
-        print("Unable to retrieve your GPS coordinates.")
+        print("Unable to retrieve your GPS coordinates.")\
+
+
+def get_closest_bus_stops(lat, lon):
+    url = "https://content.osu.edu/v2/bus/routes/CC"
+    response = requests.get(url)
+    
+    if response.status_code == 200:
+        bus_stops = response.json()
+        closest_stops = []
+        for stop in bus_stops['data']["stops"]:
+            stop_lat = stop['latitude']
+            stop_lon = stop['longitude']
+            stop_name = stop['name']
+            distance = math.sqrt((lat - stop_lat) ** 2 + (lon - stop_lon) ** 2)
+            
+            pair = {"name": stop_name, "distance": distance}
+            closest_stops.append(pair)
+        
+        closest_stops.sort(key=lambda x: x['distance'])
+        return closest_stops
+    else:
+        response.raise_for_status()
