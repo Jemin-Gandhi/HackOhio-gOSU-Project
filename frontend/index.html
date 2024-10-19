@@ -89,36 +89,35 @@
             background-color: #004494; /* Darker blue on hover */
         }
     </style>
+    <title>Flask Serial Reader & Location</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p#serialData {
+            font-size: 1.2em;
+            margin-top: 20px;
+            color: #444;
+        }
+
+        
+    </style>
 </head>
 <body>
-    <div class="app-container">
-        <h1>gOSU - Campus Navigator</h1>
-        <form>
-            <label for="location-input">Choose a building:</label>
-            <input list="location" id="location-input" name="location" placeholder="Start typing...">
-            <datalist id="location">
-                <option value="Dreese Lab">
-                <option value="Raney House">
-                <option value="Ohio Union">
-                <option value="Animal Science Building"></option>
-            </datalist>
-            <button type="button" onclick="getRoute()">Get Route</button>
-        </form>
+    <h1>Live Bus Data/h1>
+    <p id="serialData">Waiting for serial data...</p>
 
-        <div class="info-display">
-            <h2>Shortest Route:</h2>
-            <p id="route-display">Route will be displayed here.</p>
-        </div>
-
-        <div class="info-display">
-            <h2>People on the Bus:</h2>
-            <p id="people-count">0</p>
-        </div>
-        
-    <h1>Serial Data from COM3 (CH340)</h1>
-    <p id="serialData">Waiting for data...</p>
 
     <script>
+        // Function to update serial data
         function updateSerialData() {
             fetch('/api/message')
                 .then(response => response.json())
