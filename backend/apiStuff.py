@@ -108,7 +108,18 @@ def add_bus_times(lat, lon, lat2, lon2):
 
 latitude, longitude = get_current_gps_coordinates()
 print(f"Your current GPS coordinates are:", latitude, longitude)
-add_bus_times(latitude, longitude, 40.00251570565206, -83.01597557699893) # Example usage: calculate total time to bus from current location to destination
+busTimes = add_bus_times(latitude, longitude, 40.00251570565206, -83.01597557699893) # Example usage: calculate total time to bus from current location to destination
 
 def get_total_walking_time(lat1, lon1, lat2, lon2):
     return get_walking_time(lat1, lon1, lat2, lon2)
+
+walkingTime = get_total_walking_time(latitude, longitude, 40.00251570565206, -83.01597557699893)
+if walkingTime < busTimes:
+    shortest = walkingTime
+    method = "walking"
+else:
+    shortest = busTimes
+    method = "bus"
+    
+    
+print(f"The shortest time is {shortest} by {method}.")
