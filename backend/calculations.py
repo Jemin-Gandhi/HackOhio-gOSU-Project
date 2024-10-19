@@ -20,5 +20,19 @@ def get_walking_time(lat1, lon1, lat2, lon2):
         print("Error: Unable to get walking time")
         return None
 
-
-get_walking_time(39.9612, -82.9988, 39.99781000000, -83.009831)  # Example usage: calculate distance between two points
+def get_bussing_time(lat1, lon1, lat2, lon2):
+    origin = f"{lat1},{lon1}"
+    destination = f"{lat2},{lon2}"
+    
+    url = f"https://maps.googleapis.com/maps/api/directions/json?origin={origin}&destination={destination}&mode=driving&key={MAPS_API_KEY}"
+    
+    response = requests.get(url)
+    data = response.json()
+    
+    if 'routes' in data and len(data['routes']) > 0:
+        bussing_time = data['routes'][0]['legs'][0]['duration']['value']  # Time in seconds
+        print("Bussing time in seconds: ", bussing_time)
+        return bussing_time
+    else:
+        print("Error: Unable to get walking time")
+        return None

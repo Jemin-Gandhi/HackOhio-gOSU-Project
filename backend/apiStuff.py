@@ -2,7 +2,7 @@ import requests
 import json
 import geocoder
 import math
-from calculations import get_walking_time
+from calculations import get_bussing_time, get_walking_time
 
 def get_bus_routes():
     url = "https://content.osu.edu/v2/bus/routes/CC"
@@ -16,20 +16,13 @@ def get_bus_routes():
 if __name__ == "__main__":
     try:
         bus_routes = get_bus_routes()
-        print(bus_routes)
+        #print(bus_routes)
     except requests.exceptions.RequestException as e:
         print(f"An error occurred: {e}")
 
 
 
-def printJsonObject(json_obj):
-    print(json.dumps(json_obj, indent=4))
-    try:
-        bus_routes = get_bus_routes()
-        printJsonObject(bus_routes)
-    except requests.exceptions.RequestException as e:
-            print(f"An error occurred: {e}")
-            
+
 def get_bus_info():
     url = "https://content.osu.edu/v2/bus/routes/CC/vehicles"
     
@@ -43,20 +36,9 @@ def get_bus_info():
 if __name__ == "__main__":
     try:
         bus_routes = get_bus_info()
-        print(bus_routes)
+        #print(bus_routes)
     except requests.exceptions.RequestException as e:
         print(f"An error occurred: {e}")
-
-
-
-        def printJsonObject(json_obj):
-            print(json.dumps(json_obj, indent=4))
-
-        try:
-            bus_routes = get_bus_info()
-            printJsonObject(bus_routes)
-        except requests.exceptions.RequestException as e:
-            print(f"An error occurred: {e}")
 
 def get_current_gps_coordinates():
     g = geocoder.ip('me')#this function is used to find the current information using our IP Add
@@ -91,9 +73,10 @@ def get_closest_bus_stops(lat, lon):
             
             pair = {"name": stop_name, "distance": distance, "latitude": stop_lat, "longitude": stop_lon}
             closest_stops.append(pair)
-        
+        print(closest_stops)
         closest_stops.sort(key=lambda x: x['distance'])
-
+        print("Now sorted:")
+        print(closest_stops)
         if closest_stops:
             first_stop = closest_stops[0]
             first_lat = first_stop['latitude']
@@ -105,8 +88,27 @@ def get_closest_bus_stops(lat, lon):
     else:
         response.raise_for_status()
 
-lat, lon = 39.997618, -83.008567
+lat, lon = get_current_gps_coordinates()
 
 allstops = get_closest_bus_stops(lat, lon)  # Example usage: find the closest bus stops to a given location
 print(allstops)
 
+def add_bus_times(lat, lon, lat2, lon2): 
+    firstStop = get_closest_bus_stops(lat, lon)
+    print(f"firstStop: {firstStop}")
+    lastStop = get_closest_bus_stops(lat2, lon2) #THIS IS WHERE THE USER CHOOSES ENDING DESTINATION
+    print(f"lastStop: {lastStop}")
+    bussingTime = get_bussing_time(firstStop['latitude'], firstStop['longitude'], lastStop['latitude'], lastStop['longitude'])
+    print(f"firstStop: {firstStop['time']}")
+    print(f"lastStop: {lastStop['time']}")
+    print(f"bussTime: {bussingTime}")
+    totalBusTime = firstStop['time'] + lastStop['time'] + bussingTime
+    print(f"Bussing total time in seconds: {totalBusTime}")
+    return totalBusTime
+
+latitude, longitude = get_current_gps_coordinates()
+print(f"Your current GPS coordinates are:", latitude, longitude)
+add_bus_times(latitude, longitude, 40.00251570565206, -83.01597557699893) # Example usage: calculate total time to bus from current location to destination
+
+def get_total_walking_time(lat1, lon1, lat2, lon2):
+    return get_walking_time(lat1, lon1, lat2, lon2)
