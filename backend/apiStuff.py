@@ -2,12 +2,6 @@ import requests
 import json
 import geocoder
 
-endCoordinates = {
-    "Dreese Lab": (40.00224929496891, -83.01569116990318), 
-    "Raney House": (40.005443412487615, -83.01009563632141), 
-    "Ohio Union": (39.9976525575847, -83.00896671056906), 
-    "Animal Science Building": (40.0036182750196, -83.02840914819784) 
-}
 def get_bus_routes():
     url = "https://content.osu.edu/v2/bus/routes/CC"
     response = requests.get(url)
