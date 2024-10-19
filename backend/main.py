@@ -4,11 +4,6 @@ import os
 # Initialize the Flask app and configure it to serve static files from /app/frontend
 app = Flask(__name__, static_folder='frontend', static_url_path='')
 
-# Debugging: Check if the frontend folder exists
-@app.route('/debug')
-def debug():
-    return jsonify({"Frontend folder exists": os.path.exists(app.static_folder)})
-
 # Serve index.html at the root URL
 @app.route('/')
 def serve_index():
