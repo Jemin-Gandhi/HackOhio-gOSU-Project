@@ -19,11 +19,11 @@ if __name__ == "__main__":
 
 
 
-        def printJsonObject(json_obj):
-            print(json.dumps(json_obj, indent=4))
+def printJsonObject(json_obj):
+    print(json.dumps(json_obj, indent=4))
 
-        try:
-            bus_routes = get_bus_routes()
-            printJsonObject(bus_routes)
-        except requests.exceptions.RequestException as e:
-            print(f"An error occurred: {e}")
+try:
+    bus_routes = get_bus_routes()
+    printJsonObject(bus_routes)
+except requests.exceptions.RequestException as e:
+    print(f"An error occurred: {e}")
