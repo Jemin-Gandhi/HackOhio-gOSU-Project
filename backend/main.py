@@ -39,10 +39,19 @@ def serve_index():
 def serve_static_files(path):
     return send_from_directory(app.static_folder, path)
 
-# API route to get serial data
+# API route to get serial data and capacity information
 @app.route('/api/message') 
 def send_message():
-    return jsonify({"message": serial_data})
+    try:
+        capacity = int(serial_data)
+    except ValueError:
+        capacity = 0  # Default value if parsing fails
+
+    over_capacity = capacity > 60
+    return jsonify({
+        "message": f"Capacity at {capacity} of 60",
+        "over_capacity": over_capacity
+    })
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
