@@ -10,7 +10,7 @@ app = Flask(__name__, static_folder='frontend', static_url_path='')
 serial_data = "Waiting for data..."
 user_location = None  # To store the user's location
 
-# Function to continuously read from the serial port
+# Function to read from the serial port
 def read_from_serial():
     global serial_data
     try:

@@ -114,5 +114,5 @@ window.onload = function() {
     fetchLocationFromServer(); // Fetch location from the server and display
     updateBusCapacity(); // Fetch and display bus capacity
 
-    setInterval(updateBusCapacity, 500); // Update every 30 seconds
+    setInterval(updateBusCapacity, 500); // Update bus capacity every 500ms
 };
