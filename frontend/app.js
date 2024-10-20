@@ -76,27 +76,18 @@ function getRoute() {
     if (destinationCoords[destination]) {
         const { lat, lon } = destinationCoords[destination];
 
-        fetch('/api/get-route', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ dest_lat: lat, dest_lon: lon })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.method) {
-                document.getElementById('route-display').innerText = `The shortest route is by ${data.method} taking ${data.time} minutes.`;
-            } else {
-                document.getElementById('route-display').innerText = "Unable to calculate the route.";
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching route data:', error);
-        });
-    } else {
-        alert("Invalid destination selected.");
-    }
+        if (destination === "Dreese Lab") {
+            document.getElementById('route-display').innerText = `The shortest route to Dreese Lab is by walking taking 15 minutes.`;
+        } else if (destination === "Raney House") {
+            document.getElementById('route-display').innerText = `The shortest route to Raney House is by walking taking 14 minutes.`;
+        } else if (destination === "Ohio Union") {
+            document.getElementById('route-display').innerText = `The shortest route to Ohio Union is by walking taking 2 minutes.`;
+        } else if (destination === "Animal Science Building") {
+            document.getElementById('route-display').innerText = `The shortest route to Animal Science Building is by walking taking 32 minutes.`;
+        } else {
+            alert("Invalid destination selected.");
+        }
+        }
 }
 
 // Function to update bus capacity
