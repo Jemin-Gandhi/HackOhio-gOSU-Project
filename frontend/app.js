@@ -63,8 +63,65 @@ function fetchLocationFromServer() {
     });
 }
 
-// Call the function to get the current location when the page loads
+// Function to get the route to the selected destination
+function getRoute() {
+    const destination = document.getElementById('location-input').value;
+    let destinationCoords = {
+        "Dreese Lab": { lat: 40.00224929496891, lon: -83.01569116990318 },
+        "Raney House": { lat: 40.005443412487615, lon: -83.01009563632141 },
+        "Ohio Union": { lat: 39.9976525575847, lon: -83.00896671056906 },
+        "Animal Science Building": { lat: 40.0036182750196, lon: -83.02840914819784 }
+    };
+
+    if (destinationCoords[destination]) {
+        const { lat, lon } = destinationCoords[destination];
+
+        fetch('/api/get-route', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ dest_lat: lat, dest_lon: lon })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.method) {
+                document.getElementById('route-display').innerText = `The shortest route is by ${data.method} taking ${data.time} minutes.`;
+            } else {
+                document.getElementById('route-display').innerText = "Unable to calculate the route.";
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching route data:', error);
+        });
+    } else {
+        alert("Invalid destination selected.");
+    }
+}
+
+// Function to update bus capacity
+function updateBusCapacity() {
+    fetch('/api/message')
+        .then(response => response.json())
+        .then(data => {
+            if (data.percentage_full > 100) {
+                const spotsOver = Math.abs(data.spots_left); // Get the number of spots over capacity
+                document.getElementById('people-count').textContent = `${spotsOver} spots over capacity!`;
+                document.getElementById('overCapacity').classList.remove('hidden');
+            } else {
+                document.getElementById('people-count').textContent = `${data.percentage_full}% full, ${data.spots_left} spots left`;
+                document.getElementById('overCapacity').classList.add('hidden');
+            }
+        })
+        .catch(error => console.error('Error fetching bus capacity:', error));
+}
+
+
+// Call the function to get the current location and other data when the page loads
 window.onload = function() {
     initMap(); // Get location from the browser and send to the server
     fetchLocationFromServer(); // Fetch location from the server and display
+    updateBusCapacity(); // Fetch and display bus capacity
+
+    setInterval(updateBusCapacity, 500); // Update every 30 seconds
 };

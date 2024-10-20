@@ -1,6 +1,7 @@
 from flask import Flask, send_from_directory, jsonify, request
 import serial
 import threading
+from calculations import get_walking_time, get_bussing_time, get_total_walking_time  # Correct import
 
 # Initialize the Flask app and configure it to serve static files from /app/frontend
 app = Flask(__name__, static_folder='frontend', static_url_path='')
@@ -12,14 +13,13 @@ user_location = None  # To store the user's location
 # Function to continuously read from the serial port
 def read_from_serial():
     global serial_data
-    ser = None
     try:
         ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
         while True:
             if ser.in_waiting > 0:
-                serial_data = ser.readline().decode('utf-8').rstrip()
+                serial_data = ser.readline().decode('utf-8').strip()
     except serial.SerialException as e:
-        print(f"Error opening serial port: {e}")
+        print(f"Error reading from serial port: {e}")
     finally:
         if ser:
             ser.close()
@@ -40,7 +40,7 @@ def serve_static_files(path):
     return send_from_directory(app.static_folder, path)
 
 # API route to get serial data and capacity information
-@app.route('/api/message') 
+@app.route('/api/message')
 def send_message():
     try:
         capacity = int(serial_data)  # Assuming serial_data contains the current number of passengers
@@ -79,6 +79,30 @@ def receive_location():
 def get_location():
     if user_location:
         return jsonify(user_location), 200
+    else:
+        return jsonify({"status": "error", "message": "No location data available"}), 404
+
+# Calculate route times (walking vs. bussing)
+@app.route('/api/get-route', methods=['POST'])
+def get_route():
+    if user_location:
+        dest_data = request.json
+        dest_lat = dest_data['dest_lat']
+        dest_lon = dest_data['dest_lon']
+
+        walking_time = get_total_walking_time(user_location['latitude'], user_location['longitude'], dest_lat, dest_lon)
+        bussing_time = get_bussing_time(user_location['latitude'], user_location['longitude'], dest_lat, dest_lon)
+
+        if walking_time and bussing_time:
+            if walking_time < bussing_time:
+                method = "walking"
+                time = walking_time
+            else:
+                method = "bus"
+                time = bussing_time
+            return jsonify({"method": method, "time": time}), 200
+        else:
+            return jsonify({"status": "error", "message": "Unable to calculate route times"}), 500
     else:
         return jsonify({"status": "error", "message": "No location data available"}), 404
 
