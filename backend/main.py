@@ -7,7 +7,7 @@ app = Flask(__name__, static_folder='frontend', static_url_path='')
 
 # Global variables
 serial_data = "Waiting for data..."
-user_location = None
+user_location = None  # To store the user's location
 
 # Function to continuously read from the serial port
 def read_from_serial():
@@ -60,6 +60,27 @@ def send_message():
         "spots_left": spots_left
     })
 
+# API route to receive location data from the frontend
+@app.route('/api/location', methods=['POST'])
+def receive_location():
+    global user_location
+    location_data = request.json
+    if 'latitude' in location_data and 'longitude' in location_data:
+        user_location = {
+            "latitude": location_data['latitude'],
+            "longitude": location_data['longitude']
+        }
+        return jsonify({"status": "success", "message": "Location data received"}), 200
+    else:
+        return jsonify({"status": "error", "message": "Invalid data"}), 400
+
+# API route to send the location back to the frontend
+@app.route('/api/get-location', methods=['GET'])
+def get_location():
+    if user_location:
+        return jsonify(user_location), 200
+    else:
+        return jsonify({"status": "error", "message": "No location data available"}), 404
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)

@@ -34,6 +34,12 @@
 
         <div id="overCapacity" class="hidden">OVER CAPACITY</div>
 
+        <!-- New section to display the coordinates -->
+        <div class="info-display">
+            <h2>Your Coordinates:</h2>
+            <p id="coords-display">Coordinates will be displayed here.</p>
+        </div>
+
         <!-- Link to map.html styled as a button -->
         <div class="map-link">
             <a href="map.html" class="button-link">View Map</a>
@@ -45,43 +51,7 @@
         <p>&copy; <span id="currentYear"></span> - Project Authors: Mackenzie Langhals | Job Getzinger | Wyatt Gerlach | Jemin Ghandi</p>
     </footer>
 
-    <script>
-        // Set current year in the footer
-        document.getElementById("currentYear").textContent = new Date().getFullYear();
-
-        function updateSerialData() {
-            fetch('/api/message')
-                .then(response => response.json())
-                .then(data => {
-                    // Update bus capacity and handle over-capacity
-                    let spotsLeftText;
-                    if (data.spots_left < 0) {
-                        spotsLeftText = `Over capacity by ${Math.abs(data.spots_left)} spots`;
-                    } else {
-                        spotsLeftText = `${data.percentage_full} % full, ${data.spots_left} spots left`;
-                    }
-                    document.getElementById('people-count').innerText = spotsLeftText;
-
-                    // Show or hide the OVER CAPACITY message
-                    if (data.over_capacity) {
-                        document.getElementById('overCapacity').classList.remove('hidden');
-                    } else {
-                        document.getElementById('overCapacity').classList.add('hidden');
-                    }
-                })
-                .catch(error => {
-                    document.getElementById('serialData').innerText = 'Error: ' + error;
-                });
-        }
-
-        // Update serial data every 1/2 second
-        setInterval(updateSerialData, 500);
-
-        function getRoute() {
-            const building = document.getElementById('location-input').value;
-            // Your logic for fetching and displaying the route goes here
-            document.getElementById('route-display').innerText = `Calculating the route to ${building}...`;
-        }
-    </script>
+    <!-- Link to the external JS file -->
+    <script src="app.js"></script>
 </body>
 </html>
