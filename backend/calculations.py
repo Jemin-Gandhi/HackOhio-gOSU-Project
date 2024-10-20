@@ -36,7 +36,7 @@ def get_bussing_time(lat1, lon1, lat2, lon2):
         print("Bussing time in seconds: ", bussing_time)
         return bussing_time
     else:
-        print("Error: Unable to get bussing time")
+        print("Error: Unable to get walking time")
         return None
 
 # Add this function to avoid the import error in main.py
