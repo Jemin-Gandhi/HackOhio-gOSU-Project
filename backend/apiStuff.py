@@ -59,7 +59,9 @@ if __name__ == "__main__":
       #  return None
 
 def get_current_gps_coordinates():
-    g = geocoder.google('Ohio Union', method='places', key = MAPS_API_KEY)#this function is used to find the current information using our IP Add
+    place_to_go = "Udf 12th"
+    address = place_to_go + " Ohio State University"
+    g = geocoder.google(address, method='places', key = MAPS_API_KEY)#this function is used to find the current information using our IP Add
     if g.latlng is not None: #g.latlng tells if the coordiates are found or not
         return g.latlng
     else:
@@ -134,7 +136,7 @@ def get_total_walking_time(lat1, lon1, lat2, lon2):
 print ("testing")
 latitude, longitude = get_current_gps_coordinates()
 #latitude, longitude = 40.001830132172216, -83.01082794650411 #hardcoded coordinates for testing, stillman rn.
-lat2, long2 = endCoordinates["Raney House"]
+lat2, long2 = endCoordinates["Dreese Lab"]
 print(f"Your current GPS coordinates are:", latitude, longitude)
 busTimes = add_bus_times(latitude, longitude, lat2, long2) # Example usage: calculate total time to bus from current location to destination
 walkingTime = get_total_walking_time(latitude, longitude, 40.00251570565206, -83.01597557699893)
