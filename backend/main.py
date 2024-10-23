@@ -1,16 +1,19 @@
 from flask import Flask, send_from_directory, jsonify, request
-import serial
-import threading
-from calculations import get_walking_time, get_bussing_time, get_total_walking_time  # Correct import
-
+#import serial
+#import threading
+from apiStuff import get_current_gps_coordinates
+from calculations import get_total_walking_time  # Correct import
+from apiStuff import add_bus_times
 # Initialize the Flask app and configure it to serve static files from /app/frontend
 app = Flask(__name__, static_folder='frontend', static_url_path='')
 
 # Global variables
+'''
 serial_data = "Waiting for data..."
 user_location = None  # To store the user's location
-
-# Function to continuously read from the serial port
+'''
+"""
+Function to continuously read from the serial port
 def read_from_serial():
     global serial_data
     try:
@@ -28,7 +31,7 @@ def read_from_serial():
 serial_thread = threading.Thread(target=read_from_serial)
 serial_thread.daemon = True
 serial_thread.start()
-
+"""
 # Serve index.html at the root URL
 @app.route('/')
 def serve_index():
@@ -39,6 +42,7 @@ def serve_index():
 def serve_static_files(path):
     return send_from_directory(app.static_folder, path)
 
+"""
 # API route to get serial data and capacity information
 @app.route('/api/message')
 def send_message():
@@ -59,8 +63,10 @@ def send_message():
         "percentage_full": round(percentage_full, 2),
         "spots_left": spots_left
     })
+"""
 
 # API route to receive location data from the frontend
+"""
 @app.route('/api/location', methods=['POST'])
 def receive_location():
     global user_location
@@ -73,7 +79,8 @@ def receive_location():
         return jsonify({"status": "success", "message": "Location data received"}), 200
     else:
         return jsonify({"status": "error", "message": "Invalid data"}), 400
-
+"""
+"""
 # API route to send the location back to the frontend
 @app.route('/api/get-location', methods=['GET'])
 def get_location():
@@ -81,6 +88,19 @@ def get_location():
         return jsonify(user_location), 200
     else:
         return jsonify({"status": "error", "message": "No location data available"}), 404
+"""
+# Calculate route times (walking vs. bussing)
+@app.route('/api/get-current-location', methods=['POST'])
+def get_current_location():
+    current_place = request.json
+    userLat, userLong = get_current_gps_coordinates(current_place['location'])
+    print(f"User's current coordinates: Latitude = {userLat}, Longitude = {userLong}")
+    global user_location
+    user_location = {
+            "latitude": userLat,
+            "longitude": userLong
+        }
+    return jsonify({"lat": userLat, "long": userLong}), 200
 
 # Calculate route times (walking vs. bussing)
 @app.route('/api/get-route', methods=['POST'])
@@ -91,7 +111,7 @@ def get_route():
         dest_lon = dest_data['dest_lon']
 
         walking_time = get_total_walking_time(user_location['latitude'], user_location['longitude'], dest_lat, dest_lon)
-        bussing_time = get_bussing_time(user_location['latitude'], user_location['longitude'], dest_lat, dest_lon)
+        bussing_time = add_bus_times(user_location['latitude'], user_location['longitude'], dest_lat, dest_lon)
 
         if walking_time and bussing_time:
             if walking_time < bussing_time:

@@ -43,14 +43,14 @@ def get_bus_info():
         return response.json()
     else:
         response.raise_for_status()
-
+"""
 if __name__ == "__main__":
     try:
         bus_routes = get_bus_info()
         #print(bus_routes)
     except requests.exceptions.RequestException as e:
-        print(f"An error occurred: {e}")
-
+        #print(f"An error occurred: {e}")
+"""
 #def get_current_gps_coordinates():
  #   g = geocoder.ip('me')#this function is used to find the current information using our IP Add
   #  if g.latlng is not None: #g.latlng tells if the coordiates are found or not
@@ -58,8 +58,7 @@ if __name__ == "__main__":
     #else:
       #  return None
 
-def get_current_gps_coordinates():
-    place_to_go = "Udf 12th"
+def get_current_gps_coordinates(place_to_go):
     address = place_to_go + " Ohio State University"
     g = geocoder.google(address, method='places', key = MAPS_API_KEY)#this function is used to find the current information using our IP Add
     if g.latlng is not None: #g.latlng tells if the coordiates are found or not
@@ -68,12 +67,12 @@ def get_current_gps_coordinates():
         return None
 
 if __name__ == "__main__":
-    coordinates = get_current_gps_coordinates()
+    coordinates = get_current_gps_coordinates('Ohio Union')
     if coordinates is not None:
         latitude, longitude = coordinates
-        print(f"Your current GPS coordinates are:")
-        print(f"Latitude: {latitude}")
-        print(f"Longitude: {longitude}")
+        #print(f"Your current GPS coordinates are:")
+        #print(f"Latitude: {latitude}")
+        #print(f"Longitude: {longitude}")
     else:
         print("Unable to retrieve your GPS coordinates.")\
 
@@ -101,7 +100,7 @@ def get_closest_bus_stops(lat, lon):
             first_stop = closest_stops[0]
             first_lat = first_stop['latitude']
             first_lon = first_stop['longitude']
-            print(f"First stop latitude: {first_lat}, longitude: {first_lon}")
+            #print(f"First stop latitude: {first_lat}, longitude: {first_lon}")
             timeWalk = get_walking_time(lat, lon, first_lat, first_lon)
             nameAndTime = {"name": first_stop['name'], "time": timeWalk, "latitude": first_lat, "longitude": first_lon}
             return nameAndTime
@@ -115,15 +114,15 @@ def get_closest_bus_stops(lat, lon):
 
 def add_bus_times(lat, lon, lat2, lon2): 
     firstStop = get_closest_bus_stops(lat, lon)
-    print(f"firstStop: {firstStop}")
+    #print(f"firstStop: {firstStop}")
     lastStop = get_closest_bus_stops(lat2, lon2) #THIS IS WHERE THE USER CHOOSES ENDING DESTINATION
-    print(f"lastStop: {lastStop}")
+    #print(f"lastStop: {lastStop}")
     bussingTime = get_bussing_time(firstStop['latitude'], firstStop['longitude'], lastStop['latitude'], lastStop['longitude'])
-    print(f"firstStop: {firstStop['time']}")
-    print(f"lastStop: {lastStop['time']}")
-    print(f"bussTime: {bussingTime}")
+    #print(f"firstStop: {firstStop['time']}")
+    #print(f"lastStop: {lastStop['time']}")
+    #print(f"bussTime: {bussingTime}")
     totalBusTime = firstStop['time'] + lastStop['time'] + bussingTime
-    print(f"Bussing total time in seconds: {totalBusTime}")
+    #print(f"Bussing total time in seconds: {totalBusTime}")
     return totalBusTime
 
 #latitude, longitude = get_current_gps_coordinates()
@@ -132,9 +131,10 @@ def add_bus_times(lat, lon, lat2, lon2):
 
 def get_total_walking_time(lat1, lon1, lat2, lon2):
     return get_walking_time(lat1, lon1, lat2, lon2)
-     
+
+"""
 print ("testing")
-latitude, longitude = get_current_gps_coordinates()
+latitude, longitude = get_current_gps_coordinates('Ohio Union')
 #latitude, longitude = 40.001830132172216, -83.01082794650411 #hardcoded coordinates for testing, stillman rn.
 lat2, long2 = endCoordinates["Dreese Lab"]
 print(f"Your current GPS coordinates are:", latitude, longitude)
@@ -146,4 +146,5 @@ if walkingTime < busTimes:
 else:
     shortest = busTimes
     method = "bus"
-print(f"The shortest time is {shortest} seconds by {method}.")
+#print(f"The shortest time is {shortest} seconds by {method}.")
+"""

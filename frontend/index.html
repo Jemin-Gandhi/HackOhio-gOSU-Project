@@ -11,8 +11,20 @@
     <div class="app-container">
         <h1>gOSU - Campus Navigator</h1>
         <form>
-            <label for="location-input">Choose a building:</label>
-            <input list="location" id="location-input" name="location" placeholder="Start typing...">
+            <label for="location-input">Type in current location:</label>
+            <input list="location" id="location-input-origin" name="location-user" placeholder="Start typing...">
+            <datalist id="location">
+                <option value="Dreese Lab">
+                <option value="Raney House">
+                <option value="Ohio Union">
+                <option value="Animal Science Building">
+            </datalist>
+            <button type="button" onclick="getCurrentLocation()">Confirm</button>
+        </form>
+
+        <form>
+            <label for="location-input">Choose a destination:</label>
+            <input list="location" id="location-input-destination" name="location" placeholder="Start typing...">
             <datalist id="location">
                 <option value="Dreese Lab">
                 <option value="Raney House">

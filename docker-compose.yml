@@ -5,13 +5,15 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+    environment:
+        - MAPS_API_KEY=${MAPS_API_KEY}
     ports:
       - "5000:5000"
     volumes:
       - ./backend:/app               # Mount the backend folder
       - ./frontend:/app/frontend      # Mount the frontend folder
-    devices:
-      - "/dev/ttyUSB0:/dev/ttyUSB0"         # Add access to the usb0 device
+    #devices:
+    #  - "/dev/ttyUSB0:/dev/ttyUSB0"         # Add access to the usb0 device
     networks:
       - webnet
 

@@ -47,6 +47,10 @@ function showError(error) {
 }
 
 // Function to get location data from Flask and display it
+/**
+ * Fetches the location data from the Flask server and displays it.
+ */
+/** 
 function fetchLocationFromServer() {
     fetch('/api/get-location')
     .then(response => response.json())
@@ -62,10 +66,34 @@ function fetchLocationFromServer() {
         document.getElementById('coords-display').innerText = "Error fetching location data";
     });
 }
+*/
+
+// Function to get the route to the selected destination
+function getCurrentLocation() {
+    place = document.getElementById('location-input-origin').value;
+        fetch('/api/get-current-location', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ location: place })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.lat && data.long) {
+                document.getElementById('coords-display').innerText = `Latitude and Longitude of current location: ${data.lat}, ${data.long}.`;
+            } else {
+                document.getElementById('coords-display').innerText = "Unable to get coordinates";
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching route data:', error);
+        });
+    }
 
 // Function to get the route to the selected destination
 function getRoute() {
-    const destination = document.getElementById('location-input').value;
+    const destination = document.getElementById('location-input-destination').value;
     let destinationCoords = {
         "Dreese Lab": { lat: 40.00224929496891, lon: -83.01569116990318 },
         "Raney House": { lat: 40.005443412487615, lon: -83.01009563632141 },
@@ -86,7 +114,7 @@ function getRoute() {
         .then(response => response.json())
         .then(data => {
             if (data.method) {
-                document.getElementById('route-display').innerText = `The shortest route is by ${data.method} taking ${data.time} minutes.`;
+                document.getElementById('route-display').innerText = `The shortest route is by ${data.method} taking ${data.time} seconds.`;
             } else {
                 document.getElementById('route-display').innerText = "Unable to calculate the route.";
             }
